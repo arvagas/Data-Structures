@@ -13,7 +13,7 @@ class Stack:
         self.storage.add_to_head(value)
 
     def pop(self):
-        if self.size == 0:
+        if self.size < 1:
             return
         self.size -= 1
         removed_item = self.storage.remove_from_head()
