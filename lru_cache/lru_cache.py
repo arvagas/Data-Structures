@@ -22,7 +22,12 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+        if key in self.cache:
+            node = self.cache[key]
+            self.storage.move_to_front(node)
+            return node.value[1]
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -35,4 +40,17 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        pass
+        if key in self.cache:
+            node = self.cache[key]
+            node.value = (key, value)
+            self.storage.move_to_front(node)
+            return
+        
+        if self.limit is self.size:
+            del self.cache[self.storage.tail.value[0]]
+            self.storage.remove_from_tail()
+            self.size -= 1
+
+        self.storage.add_to_head((key, value))
+        self.cache[key] = self.storage.head
+        self.size += 1
